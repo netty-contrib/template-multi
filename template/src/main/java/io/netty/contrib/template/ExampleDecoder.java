@@ -15,9 +15,9 @@
  */
 package io.netty.contrib.template;
 
-import io.netty.buffer.api.Buffer;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoderForBuffer;
+import io.netty5.buffer.api.Buffer;
+import io.netty5.channel.ChannelHandlerContext;
+import io.netty5.handler.codec.ByteToMessageDecoderForBuffer;
 
 /**
  * Example Netty extension.

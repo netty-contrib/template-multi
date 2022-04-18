@@ -15,13 +15,13 @@
  */
 package io.netty.contrib.template;
 
-import io.netty.buffer.api.Buffer;
-import io.netty.channel.embedded.EmbeddedChannel;
+import io.netty5.buffer.api.Buffer;
+import io.netty5.buffer.api.DefaultBufferAllocators;
+import io.netty5.channel.embedded.EmbeddedChannel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.netty.buffer.api.DefaultGlobalBufferAllocator.DEFAULT_GLOBAL_BUFFER_ALLOCATOR;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,7 +50,7 @@ public class ExampleDecoderTest {
     }
 
     private void write(String content) {
-        Buffer buffer = DEFAULT_GLOBAL_BUFFER_ALLOCATOR.copyOf(content.getBytes(UTF_8));
+        Buffer buffer = DefaultBufferAllocators.preferredAllocator().copyOf(content.getBytes(UTF_8));
         assertThat(channel.writeInbound(buffer)).isEqualTo(true);
     }
 }
