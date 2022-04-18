@@ -15,10 +15,9 @@
  */
 package io.netty.contrib.microbenchmarks;
 
-import io.netty5.buffer.ByteBuf;
-import io.netty5.buffer.PooledByteBufAllocator;
-import io.netty5.buffer.Unpooled;
-import io.netty5.buffer.UnpooledByteBufAllocator;
+import io.netty5.buffer.api.Buffer;
+import io.netty5.buffer.api.BufferAllocator;
+import io.netty5.buffer.api.DefaultBufferAllocators;
 import io.netty5.channel.ChannelHandlerContext;
 import io.netty.contrib.template.ExampleDecoder;
 import io.netty5.microbench.channel.EmbeddedChannelWriteReleaseHandlerContext;
@@ -41,7 +40,7 @@ import org.openjdk.jmh.annotations.Warmup;
 @Measurement(iterations = 5)
 public class ExampleDecoderBenchmark {
     private ExampleDecoder decoder;
-    private ByteBuf content;
+    private Buffer content;
     private ChannelHandlerContext context;
 
     @Param({ "true", "false" })
@@ -50,13 +49,11 @@ public class ExampleDecoderBenchmark {
     @Setup(Level.Trial)
     public void setUp() {
         byte[] bytes = new byte[256];
-        content = Unpooled.buffer(bytes.length);
-        content.writeBytes(bytes);
-        ByteBuf testContent = Unpooled.unreleasableBuffer(content.asReadOnly());
+        content = DefaultBufferAllocators.preferredAllocator().copyOf(bytes);
 
         decoder = new ExampleDecoder();
-        context = new EmbeddedChannelWriteReleaseHandlerContext(pooledAllocator ? PooledByteBufAllocator.DEFAULT :
-                UnpooledByteBufAllocator.DEFAULT, decoder) {
+        context = new EmbeddedChannelWriteReleaseHandlerContext(pooledAllocator ? BufferAllocator.onHeapPooled() :
+                BufferAllocator.onHeapUnpooled(), decoder) {
             @Override
             protected void handleException(Throwable t) {
                 throw new AssertionError("Unexpected exception", t);
@@ -66,7 +63,7 @@ public class ExampleDecoderBenchmark {
 
     @TearDown(Level.Trial)
     public void tearDown() {
-        content.release();
+        content.close();
         content = null;
     }
 
