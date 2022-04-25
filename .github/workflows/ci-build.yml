@@ -52,7 +52,7 @@ jobs:
           cache: 'maven'
 
       - name: Build Netty Core
-        run: mvn install -B -T1C -q -am -pl :netty5-transport,:netty5-codec,:netty5-handler,:netty5-resolver-dns -DskipTests -Dcheckstyle.skip -Dxml.skip -Danimal.sniffer.skip -Djapicmp.skip -Drevapi.skip -Dmaven.javadoc.skip
+        run: mvn clean install -B -T1C -q -am -pl :netty5-transport,:netty5-codec,:netty5-handler,:netty5-resolver-dns -DskipTests -Dcheckstyle.skip -Dxml.skip -Danimal.sniffer.skip -Djapicmp.skip -Drevapi.skip -Dmaven.javadoc.skip
         working-directory: ./netty
 
       # See https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#setting-an-environment-variable
@@ -63,7 +63,7 @@ jobs:
       - name: Build Project
         run: |
           set -euo pipefail
-          mvn install -B -T1C -ntp -Pleak '-Dnetty.version=${{ env.netty_version }}' |& tee build-output.txt
+          mvn clean install -B -T1C -ntp -Pleak '-Dnetty.version=${{ env.netty_version }}' |& tee build-output.txt
         working-directory: ./project
 
       - name: Publish Test Reports
@@ -116,7 +116,7 @@ jobs:
           cache: 'maven'
 
       - name: Build Netty Core
-        run: mvn install -B -T1C -q -am -pl :netty5-transport,:netty5-codec,:netty5-handler,:netty5-resolver-dns -DskipTests -Dcheckstyle.skip -Dxml.skip -Danimal.sniffer.skip -Djapicmp.skip -Drevapi.skip -Dmaven.javadoc.skip
+        run: mvn clean install -B -T1C -q -am -pl :netty5-transport,:netty5-codec,:netty5-handler,:netty5-resolver-dns -DskipTests -Dcheckstyle.skip -Dxml.skip -Danimal.sniffer.skip -Djapicmp.skip -Drevapi.skip -Dmaven.javadoc.skip
         working-directory: ./netty
 
       # See https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#setting-an-environment-variable
@@ -131,7 +131,7 @@ jobs:
           languages: java
 
       - name: Build Project
-        run: mvn compile -B -T1C -ntp -Dnetty.version=${{ env.netty_version }}
+        run: mvn clean compile -B -T1C -ntp -Dnetty.version=${{ env.netty_version }}
         working-directory: ./project
 
       - name: Remove Netty Core from Analysis
