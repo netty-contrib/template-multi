@@ -52,8 +52,10 @@ public class ExampleDecoderBenchmark {
         content = DefaultBufferAllocators.preferredAllocator().copyOf(bytes);
 
         decoder = new ExampleDecoder();
-        context = new EmbeddedChannelWriteReleaseHandlerContext(pooledAllocator ? BufferAllocator.onHeapPooled() :
-                BufferAllocator.onHeapUnpooled(), decoder) {
+        BufferAllocator allocator = pooledAllocator ?
+                BufferAllocator.onHeapPooled() :
+                BufferAllocator.onHeapUnpooled();
+        context = new EmbeddedChannelWriteReleaseHandlerContext(allocator, decoder) {
             @Override
             protected void handleException(Throwable t) {
                 throw new AssertionError("Unexpected exception", t);
