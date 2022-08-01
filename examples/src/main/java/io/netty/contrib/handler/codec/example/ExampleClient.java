@@ -47,12 +47,12 @@ public final class ExampleClient {
              });
 
             // Start the connection attempt.
-            Channel ch = b.connect(HOST, PORT).get();
+            Channel ch = b.connect(HOST, PORT).asStage().get();
 
             // ... interact with channel
 
             // Close channel
-            ch.close().sync();
+            ch.close().asStage().sync();
         } finally {
             group.shutdownGracefully();
         }

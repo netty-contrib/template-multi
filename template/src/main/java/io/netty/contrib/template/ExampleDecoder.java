@@ -17,12 +17,12 @@ package io.netty.contrib.template;
 
 import io.netty5.buffer.api.Buffer;
 import io.netty5.channel.ChannelHandlerContext;
-import io.netty5.handler.codec.ByteToMessageDecoderForBuffer;
+import io.netty5.handler.codec.ByteToMessageDecoder;
 
 /**
  * Example Netty extension.
  */
-public class ExampleDecoder extends ByteToMessageDecoderForBuffer {
+public class ExampleDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, Buffer in) throws Exception {
         ctx.fireChannelRead(in.split());
